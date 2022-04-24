@@ -1,6 +1,6 @@
 
 
-Java 反射
+# Java_Reflect
 
 ## 1、简介
 
@@ -303,11 +303,9 @@ public class ReflectArrayDemo {
 
 ​    对`Method`实例调用`invoke`就相当于调用该方法（`Object invoke(Object instance, Object... parameters)`），`invoke`的第一个参数是对象实例，即在哪个实例上调用该方法，后面的可变参数要与方法参数一致，否则将报错。调用静态方法时，无需指定实例对象，`invoke`方法传入的第一个参数为`null`。通过设置`setAccessible(true)`来访问非`public`方法。
 
-## 4、动态代理
+## 4、补充
 
-## 5、补充
-
-### 5.1、`Class`实例比较和`instanceof`的差别
+### 4.1、`Class`实例比较和`instanceof`的差别
 
 因为`Class`实例在JVM中是唯一的，所以，上述方法获取的`Class`实例是同一个实例。可以用`==`比较两个`Class`实例。这种比较跟`instanceof`比较，是有差异的。
 
@@ -327,19 +325,21 @@ boolean b5 = Integer.class.isInstance(n); // true, 一个 Native 方法
 boolean b6 = Number.class.isInstance(n); // true, 一个 Native 方法
 ```
 
-### 5.2、举例JVM动态加载`class`
+### 4.2、举例JVM动态加载`class`
 
 JVM总是动态加载`class`，可以在运行期根据条件来控制加载class。
 
-### 5.3、`setAccessible(true)`可能会失败
+### 4.3、`setAccessible(true)`可能会失败
 
 ​    如果JVM运行期存在`SecurityManager`，那么它会根据规则进行检查，有可能阻止`setAccessible(true)`。例如，某个`SecurityManager`可能不允许对`java`和`javax`开头的`package`的类调用`setAccessible(true)`，这样可以保证JVM核心库的安全。
 
-### 5.4 一般情况下，反射调用耗时与次数关系
+### 4.4 一般情况下，反射调用耗时与次数关系
 
 ​    当某个反射调用的调用次数在 15 之下时，采用本地实现；当达到 15 时，便开始动态生成字节码，第15次比较耗时。之后的调用会更快。
 
 
+
+// todo java 代理
 
 参考：
 
