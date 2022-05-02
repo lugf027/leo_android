@@ -217,13 +217,13 @@ jvitualvm
 - 常见于NIO操作，用于数据缓冲区。
 - 分配、回收成本较高，但是读写性能高。
 - 不受JVM内存回收管理。
-
 - JDK 1.4 的 NIO 类可以使用 native 函数库直接分配堆外内存，这是一种基于通道与缓冲区的 I/O 方式，它在 Java 堆中存储一个 DirectByteBuffer 对象作为堆外内存的引用，这样就可以对堆外内存进行操作了。因为可以避免 Java 堆和 Native 堆之间来回复制数据，在一些场景可以带来显著的性能提高。
 - 虚拟机参数设置：`-XX:MaxDirectMemorySize`
   - 默认等于 Java 堆最大值，即 `-Xmx` 指定的值。
 - 将直接内存放在这里讲解的原因是它也可能会出现 OutOfMemoryError；
   - 服务器管理员在配置 JVM 参数时，会根据机器的实际内存设置 `-Xmx` 等信息，但经常会忽略直接内存（默认等于 `-Xmx` 设置值），这可能会使得各个内存区域的总和大于物理内存限制，从而导致动态扩展时出现 OOM。
-- 直接内存的释放：可以通过Unsafe对象（反射拿到，手动分配与释放）
+- 直接内存的释放：通过Unsafe对象完成直接内存的分配、回收，并且回收主要主动调用freeMemory方法（反射拿到，手动分配与释放）
+- ByteBuffer的实现类内部，使用了Cleaner(虚引用)来检测ByteBuffer对象。一旦ByteBuffer对象被垃圾回收，那么就会由ReferenceHandler线程通过Cleaner的clean方法调用freeMemory来释放直接内存。
 
 
 
